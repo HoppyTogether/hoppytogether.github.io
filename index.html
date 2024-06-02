@@ -38,7 +38,7 @@
 	input, select { /*input[type=text], select {*/
 	  width: 100%;
 	  height: 45px;
-	  padding: 12px 20px;
+	  padding: 12px 28px;
 	  margin: 8px 0;
 	  display: inline-block;
 	  border: 1px solid #ccc;
@@ -66,7 +66,7 @@
 	  border-radius: 5px;
 	  background-color: #e3e3e3;
 	  padding: 20px;
-	  width: 250px;
+	  width: 280px;
 	}
 	
 	/*hide up/down arrows from number input*/
@@ -149,7 +149,7 @@
 				<form name="beer_calorie_calc">		
 					<table border=0>
 						<tr>
-							<td width="90px">Volume</td>
+							<td width="90px">Volume:</td>
 							<td>
 								<input 
 									aria-required="true"
@@ -166,7 +166,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td>Unit of Volume</td>
+							<td>Unit of Volume:</td>
 							<td>
 								<select id="unit_of_volume" name="unit_of_volume" title="Unit of Volume" onchange="clearResult()" required>
 									<option value="">-</option>
@@ -199,6 +199,7 @@
 							<td><input type="submit" value="Calculate" onclick="calculateCalories(event)"></td>
 						</tr>
 						
+						<tr></tr><tr></tr>
 						<tr>
 							<td>Calories:</td>
 							<td>
