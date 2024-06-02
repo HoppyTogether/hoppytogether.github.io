@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+	<link REL='SHORTCUT ICON' HREF='favicon.ico'>
+	<title>Beer Calories Calculator</title>
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=2"/>
+
+	<head>
+		<meta name="description" content="Beer Calories Calculator">
+		<meta name="keywords" content="beer, calories, calculator, diet, weight">
+		<meta name="author" content="Dave Jones">
+	</head>
+	<style>
+	@font-face
+	{
+		font-family: Arial, Helvetica, sans-serif;
+		font-style: normal;
+		font-weight: normal;
+	}
+	
+	html * {
+		font-family: Arial, Helvetica !important;
+	}
+	
+	span {
+	  padding: 20px;
+	  font-weight: bold;
+	}
+
+	input, select { /*input[type=text], select {*/
+	  width: 100%;
+	  height: 45px;
+	  padding: 12px 20px;
+	  margin: 8px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
+
+	input[type=submit] {
+	  width: 100%;
+	  background-color: #089c5c;
+	  color: white;
+	  padding: 14px 20px;
+	  margin: 8px 0;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+
+	input[type=submit]:hover {
+	  background-color: #118251;
+	}
+
+	div {
+	  border-radius: 5px;
+	  background-color: #e3e3e3;
+	  padding: 20px;
+	  width: 220px;
+	}
+	
+	/*hide up/down arrows from number input*/
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	/* Firefox */
+	input[type=number] {
+	  -moz-appearance: textfield;
+	}
+	
+	body {
+	   transform: scale(2);
+	   transform-origin: 0 0;
+	}
+	
+	</style>
+	<script>
+	function isNumber(value) {
+		return !isNaN(value) && value.trim() !== '';
+	}
+	function isFraction(value) {
+		var fractionPattern = /^\d+\/\d+$/;
+		return fractionPattern.test(value);
+	}
+	function guessUnitOfMeasurement() { 
+		clearResult();
+		if(document.getElementById("volume").value!="") {
+			var volumeData = document.getElementById("volume").value;
+			if (isNumber(volumeData)) {
+				if (volumeData <= 5) {
+					document.getElementById("unit_of_volume").value = "pt";
+				} else if (volumeData >5 && volumeData < 100) {
+					document.getElementById("unit_of_volume").value = "floz";
+				} else if (volumeData => 100) {
+					document.getElementById("unit_of_volume").value = "ml";
+				}
+			} else if (isFraction(volumeData)) {
+				document.getElementById("unit_of_volume").value = "pt";
+			}
+		}
+	}
+	function clearResult() {
+		document.getElementById("calories_result").innerHTML = "";
+	}
+	function calculateCalories() {
+		event.preventDefault();
+		var volumeData = document.getElementById("volume").value;
+		var unitVol = document.getElementById("unit_of_volume").value;
+		var pcData = document.getElementById("percentage").value;
+		if (volumeData != "") {
+			if (unitVol != "") {
+				if (pcData != "") {
+					if (isNumber(volumeData)) {
+						if (unitVol=="ml") {
+							document.getElementById("calories_result").innerHTML = Math.round(parseFloat(volumeData) * parseFloat(pcData) * 0.084535);
+						} else if (unitVol=="pt") {
+							document.getElementById("calories_result").innerHTML = Math.round(parseFloat(volumeData) * parseFloat(pcData) * 0.084535 * 568);
+						} else if (unitVol=="floz") {
+							document.getElementById("calories_result").innerHTML = Math.round(parseFloat(volumeData) * parseFloat(pcData) * 0.084535 * 29.5735);
+						}
+					} else if (isFraction(volumeData)) {
+						document.getElementById("calories_result").innerHTML = Math.round(parseFloat(eval(volumeData)) * parseFloat(pcData) * 0.084535 * 568);
+					}
+				} else {
+					document.getElementById("calories_result").innerHTML = "";
+				}
+			}
+		}
+	}
+	</script>
+	<body bgcolor="gray">
+		<div id="content">
+			<p style="text-align:center"><b>Beer Calorie Calculator</b></p>
+			<p>
+				
+				<form name="beer_calorie_calc">		
+					<table border=0>
+						<tr>
+							<td width="80px">Volume</td>
+							<td>
+								<input 
+									aria-required="true"
+									id="volume"
+									name="volume"
+									required="required"
+									size="7"
+									title="Volume - enter a number or fraction"
+									value=""
+									type="number"
+									onclick="this.select()"
+									onchange="guessUnitOfMeasurement()"
+									>
+							</td>
+						</tr>
+						<tr>
+							<td>Unit of Volume</td>
+							<td>
+								<select id="unit_of_volume" name="unit_of_volume" title="Unit of Volume" onchange="clearResult()" required>
+									<option value="">-</option>
+									<option value="ml">millilitre</option>
+									<option value="pt">pint</option>
+									<option value="floz">fluid ounce</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>ABV %:</td>
+							<td>
+								<input 
+									aria-required="true"
+									id="percentage"
+									name="percentage"
+									required="required"
+									size="7"
+									title="Alcohol by volume - enter percentage"
+									value=""
+									type="number"
+									onclick="this.select()"
+									onchange="clearResult()"
+								>
+							</td>
+						</tr>
+						
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Calculate" onclick="calculateCalories(event)"></td>
+						</tr>
+						
+						<tr>
+							<td>Calories:</td>
+							<td>
+								<span id="calories_result"></span>
+							</td>
+						</tr>
+
+					</table>
+				</form>
+
+			<br />
+		</div>
+	</body>
+</html>
