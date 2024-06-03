@@ -69,6 +69,13 @@
 	  width: 280px;
 	}
 	
+	.centre {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	}
+	
 	/*hide up/down arrows from number input*/
 	/* Chrome, Safari, Edge, Opera */
 	input::-webkit-outer-spin-button,
@@ -81,10 +88,12 @@
 	  -moz-appearance: textfield;
 	}
 	
+	/*
 	body {
 	  transform: scale(1);
 	  transform-origin: 0 0;
 	}
+	*/
 	
 	</style>
 	<script>
@@ -142,7 +151,7 @@
 	}
 	</script>
 	<body bgcolor="gray">
-		<div id="content">
+		<div id="content" class="centre">
 			<p style="text-align:center"><b>Beer Calorie Calculator</b></p>
 			<p>
 				<form name="beer_calorie_calc">		
